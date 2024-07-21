@@ -5,8 +5,8 @@ public/
 build/
 src/
 
-dist/components/**/*.stories.js
-dist/components/**/*.stories.d.ts
+dist/stories/**/*.stories.js
+dist/stories/**/*.stories.d.ts
 dist/*.{js,ts,d.ts,css}
 
 .prettierrc

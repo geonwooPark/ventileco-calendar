@@ -1,8 +1,18 @@
 {
-  "name": "ventileco-datepicker",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
+  "name": "ventileco-calendar",
+  "private": false,
+  "version": "0.0.2",
+  "main": "dist/stories/index.js",
+  "types": "dist/stories/index.d.ts",
+  "keywords": [
+    "react",
+    "ui",
+    "component",
+    "headless",
+    "calendar",
+    "datepicker",
+    "daterange"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
@@ -10,7 +20,8 @@
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "chromatic": "npx chromatic --project-token=chpt_729674256a6ea48"
+    "chromatic": "npx chromatic --project-token=chpt_729674256a6ea48",
+    "prepare": "rm -rf dist && mkdir dist && tsc"
   },
   "dependencies": {
     "dayjs": "^1.11.11"
