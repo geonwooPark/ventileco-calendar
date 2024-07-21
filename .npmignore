@@ -1,0 +1,16 @@
+.github/
+.storybook/
+node_modules/
+public/
+build/
+src/
+
+dist/components/**/*.stories.js
+dist/components/**/*.stories.d.ts
+dist/*.{js,ts,d.ts,css}
+
+.prettierrc
+*.config.{js,ts}
+*.json
+*.log
+index.html

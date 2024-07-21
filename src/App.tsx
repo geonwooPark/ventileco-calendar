@@ -1,42 +1,42 @@
-import dayjs from "dayjs";
-import { useState } from "react";
-import DatePicker from "./stories/component/DatePicker/DatePickerMain";
-import DateRange from "./stories/component/DateRange/DateRangeMain";
+import dayjs from 'dayjs'
+import { useState } from 'react'
+import DatePicker from './stories/component/DatePicker/DatePickerMain'
+import DateRange from './stories/component/DateRange/DateRangeMain'
 
-const dayOfTheWeek = ["일", "월", "화", "수", "목", "금", "토"];
+const dayOfTheWeek = ['일', '월', '화', '수', '목', '금', '토']
 
 function App() {
-  const today = dayjs();
-  const [date, setDate] = useState(today.format("YYYY-MM-DD"));
+  const today = dayjs()
+  const [date, setDate] = useState(today.format('YYYY-MM-DD'))
   const [dateRange, setDateRange] = useState({
-    startDate: today.startOf("month").format("YYYY-MM-DD"),
-    endDate: today.endOf("month").format("YYYY-MM-DD"),
-  });
+    startDate: today.startOf('month').format('YYYY-MM-DD'),
+    endDate: today.endOf('month').format('YYYY-MM-DD'),
+  })
 
   const onDateChange = (date: string) => {
-    setDate(date);
-  };
+    setDate(date)
+  }
 
   const onDateRangeChange = ({
     startDate,
     endDate,
   }: {
-    startDate: string;
-    endDate: string;
+    startDate: string
+    endDate: string
   }) => {
-    setDateRange((prev) => ({ ...prev, startDate, endDate }));
-  };
+    setDateRange((prev) => ({ ...prev, startDate, endDate }))
+  }
 
   return (
     <div className="flex gap-4">
-      <div className="w-[320px] border rounded-md p-4 shadow-lg">
+      <div className="w-[320px] rounded-md border p-4 shadow-lg">
         {date}
         <DatePicker
           selectedDate={date}
           monthFormat="YYYY년 MM월"
           onDateChange={onDateChange}
         >
-          <div className="flex justify-between items-center">
+          <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <DatePicker.PrevYear>
                 <svg
@@ -107,11 +107,11 @@ function App() {
               </DatePicker.NextYear>
             </div>
           </div>
-          <div className="grid grid-cols-7 mt-4 mb-2 gap-4 text-center">
+          <div className="mb-2 mt-4 grid grid-cols-7 gap-4 text-center">
             {dayOfTheWeek.map((item, idx) => (
               <div
                 key={idx}
-                className={`size-8 flex items-center justify-center`}
+                className={`flex size-8 items-center justify-center`}
               >
                 {item}
               </div>
@@ -121,23 +121,23 @@ function App() {
             <DatePicker.Date>
               {({ date, isSelected, isOtherMonth }) => (
                 <div
-                  className={`size-8 flex items-center justify-center border-b-2
+                  className={`flex size-8 items-center justify-center border-b-2
                   ${
                     isSelected
-                      ? "border-blue-600 text-gray-800"
-                      : "border-transparent"
+                      ? 'border-blue-600 text-gray-800'
+                      : 'border-transparent'
                   }
-                  ${isOtherMonth ? "text-gray-400" : "text-gray-800"}
+                  ${isOtherMonth ? 'text-gray-400' : 'text-gray-800'}
                 `}
                 >
-                  {date.format("D")}
+                  {date.format('D')}
                 </div>
               )}
             </DatePicker.Date>
           </div>
         </DatePicker>
       </div>
-      <div className="w-[320px] border rounded-md p-4 shadow-lg">
+      <div className="w-[320px] rounded-md border p-4 shadow-lg">
         {`${dateRange.startDate} ~ ${dateRange.endDate}`}
         <DateRange
           startDate={dateRange.startDate}
@@ -145,7 +145,7 @@ function App() {
           monthFormat="YYYY년 MM월"
           onRangeChange={onDateRangeChange}
         >
-          <div className="flex justify-between items-center">
+          <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <DateRange.PrevYear>
                 <svg
@@ -216,11 +216,11 @@ function App() {
               </DateRange.NextYear>
             </div>
           </div>
-          <div className="grid grid-cols-7 mt-4 mb-2 gap-y-4 text-center">
+          <div className="mb-2 mt-4 grid grid-cols-7 gap-y-4 text-center">
             {dayOfTheWeek.map((item, idx) => (
               <div
                 key={idx}
-                className={`size-8 flex items-center justify-center`}
+                className={`flex size-8 items-center justify-center`}
               >
                 {item}
               </div>
@@ -239,19 +239,19 @@ function App() {
                   className={`flex items-center justify-center border-b-2
                   ${
                     isFirstSelected
-                      ? "text-white !bg-blue-600 rounded-l-md"
-                      : "border-transparent"
+                      ? 'rounded-l-md !bg-blue-600 text-white'
+                      : 'border-transparent'
                   }
                   ${
                     isSecondSelected
-                      ? "text-white !bg-blue-600 rounded-r-md"
-                      : "border-transparent"
+                      ? 'rounded-r-md !bg-blue-600 text-white'
+                      : 'border-transparent'
                   }
-                  ${isBetween ? "bg-blue-200" : ""}
-                  ${isOtherMonth ? "text-gray-400" : "text-gray-800"}
+                  ${isBetween ? 'bg-blue-200' : ''}
+                  ${isOtherMonth ? 'text-gray-400' : 'text-gray-800'}
                 `}
                 >
-                  {date.format("D")}
+                  {date.format('D')}
                 </div>
               )}
             </DateRange.Date>
@@ -259,7 +259,7 @@ function App() {
         </DateRange>
       </div>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
