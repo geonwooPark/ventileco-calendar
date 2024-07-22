@@ -1,7 +1,7 @@
 import dayjs from 'dayjs'
 import { useState } from 'react'
-import DatePicker from './stories/component/DatePicker/DatePickerMain'
-import DateRange from './stories/component/DateRange/DateRangeMain'
+import DatePicker from './stories/DatePicker/DatePickerMain'
+import DateRange from './stories/DateRange/DateRangeMain'
 
 const dayOfTheWeek = ['일', '월', '화', '수', '목', '금', '토']
 
