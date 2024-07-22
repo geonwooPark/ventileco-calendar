@@ -8,6 +8,7 @@ const dayOfTheWeek = ['일', '월', '화', '수', '목', '금', '토']
 export default {
   title: 'COMPONENTS/DateRange',
   component: DateRange,
+  tags: ['autodocs'],
   parameters: {
     layout: 'centered',
   },
