@@ -1,19 +1,19 @@
-import { PropsWithChildren } from "react";
-import { useDateRangeContext } from "./DateRangeMain";
+import { PropsWithChildren } from 'react'
+import { useDateRangeContext } from './DateRangeMain'
 
 interface DateRangeNextMonthProps {
-  className?: string;
+  className?: string
 }
 
 export default function DateRangeNextMonth({
   children,
   className,
 }: PropsWithChildren<DateRangeNextMonthProps>) {
-  const { onNextMonthClick } = useDateRangeContext();
+  const { onNextMonthClick } = useDateRangeContext()
 
   return (
     <button onClick={onNextMonthClick} className={className}>
       {children}
     </button>
-  );
+  )
 }

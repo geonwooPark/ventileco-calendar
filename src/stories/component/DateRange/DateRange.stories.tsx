@@ -1,45 +1,45 @@
-import type { Meta } from "@storybook/react";
-import dayjs from "dayjs";
-import { useState } from "react";
-import DateRange from "./DateRangeMain";
+import type { Meta } from '@storybook/react'
+import dayjs from 'dayjs'
+import { useState } from 'react'
+import DateRange from './DateRangeMain'
 
-const dayOfTheWeek = ["일", "월", "화", "수", "목", "금", "토"];
+const dayOfTheWeek = ['일', '월', '화', '수', '목', '금', '토']
 
 export default {
-  title: "COMPONENTS/DateRange",
+  title: 'COMPONENTS/DateRange',
   component: DateRange,
   parameters: {
-    layout: "centered",
+    layout: 'centered',
   },
-} as Meta;
+} as Meta
 
 export function Normal() {
-  const today = dayjs();
+  const today = dayjs()
 
   const [dateRange, setDateRange] = useState({
-    startDate: today.startOf("month").format("YYYY-MM-DD"),
-    endDate: today.endOf("month").format("YYYY-MM-DD"),
-  });
+    startDate: today.startOf('month').format('YYYY-MM-DD'),
+    endDate: today.endOf('month').format('YYYY-MM-DD'),
+  })
 
   const onDateRangeChange = ({
     startDate,
     endDate,
   }: {
-    startDate: string;
-    endDate: string;
+    startDate: string
+    endDate: string
   }) => {
-    setDateRange((prev) => ({ ...prev, startDate, endDate }));
-  };
+    setDateRange((prev) => ({ ...prev, startDate, endDate }))
+  }
 
   return (
-    <div className="w-[320px] border rounded-md p-4 shadow-lg">
+    <div className="w-[320px] rounded-md border p-4 shadow-lg">
       <DateRange
         startDate={dateRange.startDate}
         endDate={dateRange.endDate}
         monthFormat="YYYY년 MM월"
         onRangeChange={onDateRangeChange}
       >
-        <div className="flex justify-between items-center">
+        <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <DateRange.PrevYear>
               <svg
@@ -110,11 +110,11 @@ export function Normal() {
             </DateRange.NextYear>
           </div>
         </div>
-        <div className="grid grid-cols-7 mt-4 mb-2 gap-y-4 text-center">
+        <div className="mb-2 mt-4 grid grid-cols-7 gap-y-4 text-center">
           {dayOfTheWeek.map((item, idx) => (
             <div
               key={idx}
-              className={`size-8 flex items-center justify-center`}
+              className={`flex size-8 items-center justify-center`}
             >
               {item}
             </div>
@@ -133,25 +133,25 @@ export function Normal() {
                 className={`flex items-center justify-center border-b-2
                   ${
                     isFirstSelected
-                      ? "text-white !bg-blue-600 rounded-l-md"
-                      : "border-transparent"
+                      ? 'rounded-l-md !bg-blue-600 text-white'
+                      : 'border-transparent'
                   }
                   ${
                     isSecondSelected
-                      ? "text-white !bg-blue-600 rounded-r-md"
-                      : "border-transparent"
+                      ? 'rounded-r-md !bg-blue-600 text-white'
+                      : 'border-transparent'
                   }
-                  ${isBetween ? "bg-blue-200" : ""}
-                  ${isOtherMonth ? "text-gray-400" : "text-gray-800"}
+                  ${isBetween ? 'bg-blue-200' : ''}
+                  ${isOtherMonth ? 'text-gray-400' : 'text-gray-800'}
                 `}
               >
-                {date.format("D")}
+                {date.format('D')}
               </div>
             )}
           </DateRange.Date>
         </div>
       </DateRange>
-      <p className="text-center text-sm mt-4">{`${dateRange.startDate} ~ ${dateRange.endDate}`}</p>
+      <p className="mt-4 text-center text-sm">{`${dateRange.startDate} ~ ${dateRange.endDate}`}</p>
     </div>
-  );
+  )
 }

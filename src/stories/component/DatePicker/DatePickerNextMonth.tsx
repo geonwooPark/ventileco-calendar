@@ -1,19 +1,19 @@
-import { PropsWithChildren } from "react";
-import { useDatePickerContext } from "./DatePickerMain";
+import { PropsWithChildren } from 'react'
+import { useDatePickerContext } from './DatePickerMain'
 
 interface DatePickerNextMonthProps {
-  className?: string;
+  className?: string
 }
 
 export default function DatePickerNextMonth({
   children,
   className,
 }: PropsWithChildren<DatePickerNextMonthProps>) {
-  const { onNextMonthClick } = useDatePickerContext();
+  const { onNextMonthClick } = useDatePickerContext()
 
   return (
     <button onClick={onNextMonthClick} className={className}>
       {children}
     </button>
-  );
+  )
 }

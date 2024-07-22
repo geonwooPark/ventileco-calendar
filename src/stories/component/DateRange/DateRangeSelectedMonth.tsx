@@ -1,13 +1,13 @@
-import { useDateRangeContext } from "./DateRangeMain";
+import { useDateRangeContext } from './DateRangeMain'
 
 interface DateRangeSelectedMonthProps {
-  className?: string;
+  className?: string
 }
 
 export default function DateRangeSelectedMonth({
   className,
 }: DateRangeSelectedMonthProps) {
-  const { selectedMonth } = useDateRangeContext();
+  const { selectedMonth } = useDateRangeContext()
 
-  return <p className={className}>{selectedMonth}</p>;
+  return <p className={className}>{selectedMonth}</p>
 }

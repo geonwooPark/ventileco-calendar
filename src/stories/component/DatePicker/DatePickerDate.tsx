@@ -1,5 +1,5 @@
-import dayjs from "dayjs";
-import { useDatePickerContext } from "./DatePickerMain";
+import dayjs from 'dayjs'
+import { useDatePickerContext } from './DatePickerMain'
 
 interface DatePickerDateProps {
   children: ({
@@ -7,15 +7,15 @@ interface DatePickerDateProps {
     isSelected,
     isOtherMonth,
   }: {
-    date: dayjs.Dayjs;
-    isSelected: boolean;
-    isOtherMonth: boolean;
-  }) => React.ReactNode;
+    date: dayjs.Dayjs
+    isSelected: boolean
+    isOtherMonth: boolean
+  }) => React.ReactNode
 }
 
 export default function DatePickerDate({ children }: DatePickerDateProps) {
   const { currentDate, monthFormat, selectedMonth, days, onDateClick } =
-    useDatePickerContext();
+    useDatePickerContext()
 
   return (
     <>
@@ -30,5 +30,5 @@ export default function DatePickerDate({ children }: DatePickerDateProps) {
         </button>
       ))}
     </>
-  );
+  )
 }

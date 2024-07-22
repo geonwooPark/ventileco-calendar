@@ -1,19 +1,19 @@
-import { PropsWithChildren } from "react";
-import { useDatePickerContext } from "./DatePickerMain";
+import { PropsWithChildren } from 'react'
+import { useDatePickerContext } from './DatePickerMain'
 
 interface DatePickerPrevYearProps {
-  className?: string;
+  className?: string
 }
 
 export default function DatePickerPrevYear({
   children,
   className,
 }: PropsWithChildren<DatePickerPrevYearProps>) {
-  const { onPrevYearClick } = useDatePickerContext();
+  const { onPrevYearClick } = useDatePickerContext()
 
   return (
     <button onClick={onPrevYearClick} className={className}>
       {children}
     </button>
-  );
+  )
 }

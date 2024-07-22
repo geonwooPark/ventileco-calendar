@@ -1,6 +1,6 @@
-import dayjs from "dayjs";
-import customParseFormat from "dayjs/plugin/customParseFormat";
-import isBetween from "dayjs/plugin/isBetween";
+import dayjs from 'dayjs'
+import customParseFormat from 'dayjs/plugin/customParseFormat'
+import isBetween from 'dayjs/plugin/isBetween'
 import {
   ForwardedRef,
   PropsWithChildren,
@@ -9,150 +9,150 @@ import {
   useEffect,
   useMemo,
   useState,
-} from "react";
-import { _createContext } from "../../../utils/_createContext";
-import DateRangeSelectedMonth from "./DateRangeSelectedMonth";
-import DateRangeDate from "./DateRangeDate";
-import DateRangeNextMonth from "./DateRangeNextMonth";
-import DateRangePrevMonth from "./DateRangePrevMonth";
-import DateRangeNextYear from "./DateRangeNextYear";
-import DateRangePrevYear from "./DateRangePrevYear";
+} from 'react'
+import { _createContext } from '../../../utils/_createContext'
+import DateRangeSelectedMonth from './DateRangeSelectedMonth'
+import DateRangeDate from './DateRangeDate'
+import DateRangeNextMonth from './DateRangeNextMonth'
+import DateRangePrevMonth from './DateRangePrevMonth'
+import DateRangeNextYear from './DateRangeNextYear'
+import DateRangePrevYear from './DateRangePrevYear'
 
-dayjs.extend(customParseFormat);
-dayjs.extend(isBetween);
+dayjs.extend(customParseFormat)
+dayjs.extend(isBetween)
 
 interface DateRangeMainProps {
-  format?: string;
-  startDate: string;
-  endDate: string;
-  monthFormat?: string;
+  format?: string
+  startDate: string
+  endDate: string
+  monthFormat?: string
   onRangeChange?: ({
     startDate,
     endDate,
   }: {
-    startDate: string;
-    endDate: string;
-  }) => void;
+    startDate: string
+    endDate: string
+  }) => void
 }
 
 type DateRangeState = {
-  firstSelectedDate: dayjs.Dayjs;
-  secondSelectedDate: dayjs.Dayjs;
-  selectedMonth: string;
-  days: dayjs.Dayjs[];
-  monthFormat?: string;
-  onPrevMonthClick: () => void;
-  onNextMonthClick: () => void;
-  onPrevYearClick: () => void;
-  onNextYearClick: () => void;
-  onDateClick: (date: dayjs.Dayjs) => void;
-};
+  firstSelectedDate: dayjs.Dayjs
+  secondSelectedDate: dayjs.Dayjs
+  selectedMonth: string
+  days: dayjs.Dayjs[]
+  monthFormat?: string
+  onPrevMonthClick: () => void
+  onNextMonthClick: () => void
+  onPrevYearClick: () => void
+  onNextYearClick: () => void
+  onDateClick: (date: dayjs.Dayjs) => void
+}
 
 export const [useDateRangeContext, DateRangeProvider] =
-  _createContext<DateRangeState>();
+  _createContext<DateRangeState>()
 
 function DateRangeMain(
   {
     children,
-    format = "YYYY-MM-DD",
-    monthFormat = "MMM YYYY",
+    format = 'YYYY-MM-DD',
+    monthFormat = 'MMM YYYY',
     ...props
   }: PropsWithChildren<DateRangeMainProps>,
-  forwardRef: ForwardedRef<HTMLDivElement>
+  forwardRef: ForwardedRef<HTMLDivElement>,
 ) {
-  const { startDate, endDate, onRangeChange } = props;
-  const today = dayjs();
+  const { startDate, endDate, onRangeChange } = props
+  const today = dayjs()
 
   const [firstSelectedDate, setFirstSelectedDate] = useState<dayjs.Dayjs>(
-    dayjs(startDate)
-  );
+    dayjs(startDate),
+  )
   const [secondSelectedDate, setSecondSelectedDate] = useState<dayjs.Dayjs>(
-    dayjs(endDate)
-  );
-  const [isFirstTurn, setIsFirstTurn] = useState(true);
+    dayjs(endDate),
+  )
+  const [isFirstTurn, setIsFirstTurn] = useState(true)
   const [selectedMonth, setSelectedMonth] = useState<string>(
-    today.format(monthFormat)
-  );
+    today.format(monthFormat),
+  )
 
   const parsedMonth = useMemo(
     () => dayjs(selectedMonth, monthFormat),
-    [selectedMonth, monthFormat]
-  );
+    [selectedMonth, monthFormat],
+  )
 
   const days = useMemo(() => {
-    const startOfMonth = parsedMonth.startOf("month");
-    const endOfMonth = parsedMonth.endOf("month");
-    const startOfFirstWeek = startOfMonth.startOf("week");
-    const endOfLastWeek = endOfMonth.endOf("week");
+    const startOfMonth = parsedMonth.startOf('month')
+    const endOfMonth = parsedMonth.endOf('month')
+    const startOfFirstWeek = startOfMonth.startOf('week')
+    const endOfLastWeek = endOfMonth.endOf('week')
 
-    const daysArray: dayjs.Dayjs[] = [];
+    const daysArray: dayjs.Dayjs[] = []
     for (
       let date = startOfFirstWeek;
       date.isBefore(endOfLastWeek) || date.isSame(endOfLastWeek);
-      date = date.add(1, "day")
+      date = date.add(1, 'day')
     ) {
-      daysArray.push(date);
+      daysArray.push(date)
     }
-    return daysArray;
-  }, [parsedMonth]);
+    return daysArray
+  }, [parsedMonth])
 
   const onPrevMonthClick = useCallback(() => {
     setSelectedMonth((prev) =>
-      dayjs(prev, monthFormat).add(-1, "month").format(monthFormat)
-    );
-  }, [monthFormat]);
+      dayjs(prev, monthFormat).add(-1, 'month').format(monthFormat),
+    )
+  }, [monthFormat])
 
   const onNextMonthClick = useCallback(() => {
     setSelectedMonth((prev) =>
-      dayjs(prev, monthFormat).add(1, "month").format(monthFormat)
-    );
-  }, [monthFormat]);
+      dayjs(prev, monthFormat).add(1, 'month').format(monthFormat),
+    )
+  }, [monthFormat])
 
   const onPrevYearClick = useCallback(() => {
     setSelectedMonth((prev) =>
-      dayjs(prev, monthFormat).add(-1, "year").format(monthFormat)
-    );
-  }, [monthFormat]);
+      dayjs(prev, monthFormat).add(-1, 'year').format(monthFormat),
+    )
+  }, [monthFormat])
 
   const onNextYearClick = useCallback(() => {
     setSelectedMonth((prev) =>
-      dayjs(prev, monthFormat).add(1, "year").format(monthFormat)
-    );
-  }, [monthFormat]);
+      dayjs(prev, monthFormat).add(1, 'year').format(monthFormat),
+    )
+  }, [monthFormat])
 
   const onDateClick = useCallback(
     (date: dayjs.Dayjs) => {
       if (isFirstTurn) {
-        setFirstSelectedDate(date);
-        setIsFirstTurn(false);
+        setFirstSelectedDate(date)
+        setIsFirstTurn(false)
       } else {
-        setSecondSelectedDate(date);
-        setIsFirstTurn(true);
+        setSecondSelectedDate(date)
+        setIsFirstTurn(true)
       }
     },
-    [isFirstTurn]
-  );
+    [isFirstTurn],
+  )
 
   useEffect(() => {
-    if (!onRangeChange) return;
+    if (!onRangeChange) return
 
     const orderCheck =
       firstSelectedDate.isBefore(secondSelectedDate) ||
-      firstSelectedDate.isSame(secondSelectedDate);
-    const startDate = firstSelectedDate.format(format);
-    const endDate = secondSelectedDate.format(format);
+      firstSelectedDate.isSame(secondSelectedDate)
+    const startDate = firstSelectedDate.format(format)
+    const endDate = secondSelectedDate.format(format)
 
     onRangeChange({
       startDate: orderCheck ? startDate : endDate,
       endDate: orderCheck ? endDate : startDate,
-    });
+    })
 
     if (!orderCheck) {
-      setIsFirstTurn((prev) => !prev);
-      setFirstSelectedDate(secondSelectedDate);
-      setSecondSelectedDate(firstSelectedDate);
+      setIsFirstTurn((prev) => !prev)
+      setFirstSelectedDate(secondSelectedDate)
+      setSecondSelectedDate(firstSelectedDate)
     }
-  }, [firstSelectedDate, secondSelectedDate]);
+  }, [firstSelectedDate, secondSelectedDate])
 
   const providerValue = useMemo(
     () => ({
@@ -178,14 +178,14 @@ function DateRangeMain(
       onPrevYearClick,
       onNextYearClick,
       onDateClick,
-    ]
-  );
+    ],
+  )
 
   return (
     <DateRangeProvider value={providerValue}>
       <div ref={forwardRef}>{children}</div>
     </DateRangeProvider>
-  );
+  )
 }
 
 const DateRange = Object.assign(forwardRef(DateRangeMain), {
@@ -195,6 +195,6 @@ const DateRange = Object.assign(forwardRef(DateRangeMain), {
   PrevMonth: DateRangePrevMonth,
   NextYear: DateRangeNextYear,
   PrevYear: DateRangePrevYear,
-});
+})
 
-export default DateRange;
+export default DateRange
