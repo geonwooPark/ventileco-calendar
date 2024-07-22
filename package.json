@@ -1,7 +1,7 @@
 {
   "name": "ventileco-calendar",
   "private": false,
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "React Calendar",
   "main": "dist/stories/index.js",
   "types": "dist/stories/index.d.ts",
