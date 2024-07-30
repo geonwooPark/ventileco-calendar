@@ -16,13 +16,18 @@ import DatePickerNextYear from './DatePickerNextYear'
 import DatePickerPrevMonth from './DatePickerPrevMonth'
 import DatePickerPrevYear from './DatePickerPrevYear'
 import { _createContext } from '../../utils/_createContext'
+import { useCalendar } from '../../hooks/useCalendar'
 
 dayjs.extend(customParseFormat)
 
 interface DatePickerMainProps {
+  /** 현재 선택된 날짜를 설정 */
   selectedDate: string
+  /** 날짜가 표시되는 포맷을 설정 */
   format?: string
+  /** 달을 표시하는 부분의 포맷을 설정 */
   monthFormat?: string
+  /** 날짜의 상태를 변경하는 함수를 설정 */
   onDateChange?: (date: string) => void
 }
 
@@ -51,60 +56,18 @@ function DatePickerMain(
   }: PropsWithChildren<DatePickerMainProps>,
   forwardRef: ForwardedRef<HTMLDivElement>,
 ) {
-  const today = dayjs()
+  const {
+    selectedMonth,
+    days,
+    onPrevMonthClick,
+    onNextMonthClick,
+    onPrevYearClick,
+    onNextYearClick,
+  } = useCalendar(monthFormat)
 
   const [currentDate, setCurrentDate] = useState<dayjs.Dayjs>(
     dayjs(selectedDate, format),
   )
-  const [selectedMonth, setSelectedMonth] = useState<string>(
-    today.format(monthFormat),
-  )
-
-  const parsedMonth = useMemo(
-    () => dayjs(selectedMonth, monthFormat),
-    [selectedMonth, monthFormat],
-  )
-
-  const days = useMemo(() => {
-    const startOfMonth = parsedMonth.startOf('month')
-    const endOfMonth = parsedMonth.endOf('month')
-    const startOfFirstWeek = startOfMonth.startOf('week')
-    const endOfLastWeek = endOfMonth.endOf('week')
-
-    const daysArray: dayjs.Dayjs[] = []
-    for (
-      let date = startOfFirstWeek;
-      date.isBefore(endOfLastWeek) || date.isSame(endOfLastWeek);
-      date = date.add(1, 'day')
-    ) {
-      daysArray.push(date)
-    }
-    return daysArray
-  }, [parsedMonth])
-
-  const onPrevMonthClick = useCallback(() => {
-    setSelectedMonth((prev) =>
-      dayjs(prev, monthFormat).add(-1, 'month').format(monthFormat),
-    )
-  }, [monthFormat])
-
-  const onNextMonthClick = useCallback(() => {
-    setSelectedMonth((prev) =>
-      dayjs(prev, monthFormat).add(1, 'month').format(monthFormat),
-    )
-  }, [monthFormat])
-
-  const onPrevYearClick = useCallback(() => {
-    setSelectedMonth((prev) =>
-      dayjs(prev, monthFormat).add(-1, 'year').format(monthFormat),
-    )
-  }, [monthFormat])
-
-  const onNextYearClick = useCallback(() => {
-    setSelectedMonth((prev) =>
-      dayjs(prev, monthFormat).add(1, 'year').format(monthFormat),
-    )
-  }, [monthFormat])
 
   const onDateClick = useCallback((date: dayjs.Dayjs) => {
     setCurrentDate(date)
