@@ -14,13 +14,13 @@ interface DatePickerDateProps {
 }
 
 export default function DatePickerDate({ children }: DatePickerDateProps) {
-  const { currentDate, monthFormat, selectedMonth, days, onDateClick } =
+  const { currentDate, monthFormat, selectedMonth, days, onClick } =
     useDatePickerContext()
 
   return (
     <>
       {days.map((date, idx) => (
-        <button key={idx} onClick={() => onDateClick(date)}>
+        <button key={idx} onClick={() => onClick(date)}>
           {children({
             date,
             isSelected: currentDate.isSame(date),

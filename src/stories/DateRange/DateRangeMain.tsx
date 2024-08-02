@@ -6,7 +6,6 @@ import {
   PropsWithChildren,
   forwardRef,
   useCallback,
-  useEffect,
   useMemo,
   useState,
 } from 'react'
@@ -32,7 +31,7 @@ interface DateRangeMainProps {
   /** 달을 표시하는 부분의 포맷을 설정 */
   monthFormat?: string
   /** 날짜의 상태를 변경하는 함수를 설정 */
-  onRangeChange?: ({
+  onRangeChange: ({
     startDate,
     endDate,
   }: {
@@ -51,7 +50,7 @@ type DateRangeState = {
   onNextMonthClick: () => void
   onPrevYearClick: () => void
   onNextYearClick: () => void
-  onDateClick: (date: dayjs.Dayjs) => void
+  onClick: (date: dayjs.Dayjs) => void
 }
 
 export const [useDateRangeContext, DateRangeProvider] =
@@ -60,13 +59,14 @@ export const [useDateRangeContext, DateRangeProvider] =
 function DateRangeMain(
   {
     children,
+    startDate,
+    endDate,
     format = 'YYYY-MM-DD',
     monthFormat = 'MMM YYYY',
-    ...props
+    onRangeChange,
   }: PropsWithChildren<DateRangeMainProps>,
   forwardRef: ForwardedRef<HTMLDivElement>,
 ) {
-  const { startDate, endDate, onRangeChange } = props
   const {
     selectedMonth,
     days,
@@ -76,52 +76,32 @@ function DateRangeMain(
     onNextYearClick,
   } = useCalendar(monthFormat)
 
-  const [firstSelectedDate, setFirstSelectedDate] = useState<dayjs.Dayjs>(
-    dayjs(startDate),
-  )
-  const [secondSelectedDate, setSecondSelectedDate] = useState<dayjs.Dayjs>(
-    dayjs(endDate),
-  )
   const [isFirstTurn, setIsFirstTurn] = useState(true)
 
-  const onDateClick = useCallback(
+  const onClick = useCallback(
     (date: dayjs.Dayjs) => {
+      const selectedDate = dayjs(date).format(format)
+
       if (isFirstTurn) {
-        setFirstSelectedDate(date)
         setIsFirstTurn(false)
+        onRangeChange({
+          startDate: selectedDate,
+          endDate: dayjs(endDate).format(format),
+        })
       } else {
-        setSecondSelectedDate(date)
         setIsFirstTurn(true)
+        onRangeChange({
+          startDate: dayjs(startDate).format(format),
+          endDate: selectedDate,
+        })
       }
     },
     [isFirstTurn],
   )
-
-  useEffect(() => {
-    if (!onRangeChange) return
-
-    const orderCheck =
-      firstSelectedDate.isBefore(secondSelectedDate) ||
-      firstSelectedDate.isSame(secondSelectedDate)
-    const startDate = firstSelectedDate.format(format)
-    const endDate = secondSelectedDate.format(format)
-
-    onRangeChange({
-      startDate: orderCheck ? startDate : endDate,
-      endDate: orderCheck ? endDate : startDate,
-    })
-
-    if (!orderCheck) {
-      setIsFirstTurn((prev) => !prev)
-      setFirstSelectedDate(secondSelectedDate)
-      setSecondSelectedDate(firstSelectedDate)
-    }
-  }, [firstSelectedDate, secondSelectedDate])
-
   const providerValue = useMemo(
     () => ({
-      firstSelectedDate,
-      secondSelectedDate,
+      firstSelectedDate: dayjs(startDate),
+      secondSelectedDate: dayjs(endDate),
       selectedMonth,
       days,
       monthFormat,
@@ -129,20 +109,9 @@ function DateRangeMain(
       onNextMonthClick,
       onPrevYearClick,
       onNextYearClick,
-      onDateClick,
+      onClick,
     }),
-    [
-      firstSelectedDate,
-      secondSelectedDate,
-      selectedMonth,
-      days,
-      monthFormat,
-      onPrevMonthClick,
-      onNextMonthClick,
-      onPrevYearClick,
-      onNextYearClick,
-      onDateClick,
-    ],
+    [startDate, endDate, selectedMonth, days, monthFormat],
   )
 
   return (

@@ -4,9 +4,7 @@ import {
   PropsWithChildren,
   forwardRef,
   useCallback,
-  useEffect,
   useMemo,
-  useState,
 } from 'react'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
 import DatePickerSelectedMonth from './DatePickerSelectedMonth'
@@ -28,7 +26,7 @@ interface DatePickerMainProps {
   /** 달을 표시하는 부분의 포맷을 설정 */
   monthFormat?: string
   /** 날짜의 상태를 변경하는 함수를 설정 */
-  onDateChange?: (date: string) => void
+  onDateChange: (date: string) => void
 }
 
 type DatePickerState = {
@@ -40,7 +38,7 @@ type DatePickerState = {
   onNextMonthClick: () => void
   onPrevYearClick: () => void
   onNextYearClick: () => void
-  onDateClick: (date: dayjs.Dayjs) => void
+  onClick: (date: dayjs.Dayjs) => void
 }
 
 export const [useDatePickerContext, DatePickerProvider] =
@@ -65,23 +63,14 @@ function DatePickerMain(
     onNextYearClick,
   } = useCalendar(monthFormat)
 
-  const [currentDate, setCurrentDate] = useState<dayjs.Dayjs>(
-    dayjs(selectedDate, format),
-  )
-
-  const onDateClick = useCallback((date: dayjs.Dayjs) => {
-    setCurrentDate(date)
+  const onClick = useCallback((date: dayjs.Dayjs) => {
+    const selectedDate = dayjs(date).format(format)
+    onDateChange(selectedDate)
   }, [])
-
-  useEffect(() => {
-    if (!onDateChange) return
-
-    onDateChange(currentDate.format(format))
-  }, [currentDate])
 
   const providerValue = useMemo(
     () => ({
-      currentDate,
+      currentDate: dayjs(selectedDate),
       selectedMonth,
       days,
       monthFormat,
@@ -89,19 +78,9 @@ function DatePickerMain(
       onNextMonthClick,
       onPrevYearClick,
       onNextYearClick,
-      onDateClick,
+      onClick,
     }),
-    [
-      currentDate,
-      selectedMonth,
-      days,
-      monthFormat,
-      onPrevMonthClick,
-      onNextMonthClick,
-      onPrevYearClick,
-      onNextYearClick,
-      onDateClick,
-    ],
+    [selectedDate, selectedMonth, days, monthFormat],
   )
 
   return (

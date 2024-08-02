@@ -1,7 +1,7 @@
 import dayjs from 'dayjs'
 import { useDateRangeContext } from './DateRangeMain'
 
-interface DateRangeDateProps {
+interface DoubleDateRangeDateProps {
   children: ({
     date,
     isFirstSelected,
@@ -11,36 +11,38 @@ interface DateRangeDateProps {
   }: {
     date: dayjs.Dayjs
     isFirstSelected: boolean
-    isSecondSelected: boolean
+    isSecondSelected?: boolean
     isBetween: boolean
     isOtherMonth: boolean
   }) => React.ReactNode
 }
 
-export default function DateRangeDate({ children }: DateRangeDateProps) {
+export default function DateRangeDate({ children }: DoubleDateRangeDateProps) {
   const {
     firstSelectedDate,
     secondSelectedDate,
     monthFormat,
     selectedMonth,
     days,
-    onDateClick,
+    onClick,
   } = useDateRangeContext()
 
   return (
     <>
       {days.map((date, idx) => (
-        <button key={idx} onClick={() => onDateClick(date)}>
+        <button key={idx} onClick={() => onClick(date)}>
           {children({
             date,
             isFirstSelected: firstSelectedDate.isSame(date),
-            isSecondSelected: secondSelectedDate.isSame(date),
-            isBetween: date.isBetween(
-              firstSelectedDate,
-              secondSelectedDate,
-              'day',
-              '[]',
-            ),
+            isSecondSelected: secondSelectedDate?.isSame(date),
+            isBetween:
+              firstSelectedDate.isBefore(secondSelectedDate) &&
+              date.isBetween(
+                firstSelectedDate,
+                secondSelectedDate,
+                'day',
+                '[]',
+              ),
             isOtherMonth:
               dayjs(selectedMonth, monthFormat).month() !== date.month(),
           })}
