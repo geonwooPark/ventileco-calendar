@@ -7,7 +7,7 @@ import {
   forwardRef,
   useCallback,
   useMemo,
-  useState,
+  useRef,
 } from 'react'
 import { _createContext } from '../../utils/_createContext'
 import DateRangeSelectedMonth from './DateRangeSelectedMonth'
@@ -75,28 +75,27 @@ function DateRangeMain(
     onPrevYearClick,
     onNextYearClick,
   } = useCalendar(monthFormat)
-
-  const [isFirstTurn, setIsFirstTurn] = useState(true)
+  const isFirstTurn = useRef<boolean>(true)
 
   const onClick = useCallback(
     (date: dayjs.Dayjs) => {
       const selectedDate = dayjs(date).format(format)
 
-      if (isFirstTurn) {
-        setIsFirstTurn(false)
+      if (isFirstTurn.current) {
+        isFirstTurn.current = false
         onRangeChange({
           startDate: selectedDate,
           endDate: dayjs(endDate).format(format),
         })
       } else {
-        setIsFirstTurn(true)
+        isFirstTurn.current = true
         onRangeChange({
           startDate: dayjs(startDate).format(format),
           endDate: selectedDate,
         })
       }
     },
-    [isFirstTurn],
+    [isFirstTurn.current],
   )
   const providerValue = useMemo(
     () => ({
